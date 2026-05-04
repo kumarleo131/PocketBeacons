@@ -21,8 +21,9 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
 
     public PocketBeaconScreen(PocketBeaconMenu menu, PlayerInventory inventory, Text title) {
         super(menu, inventory, Text.of("")); // Temp get rid of wierd title on GUI
-        this.width = 256;
-        this.height = 256;
+        this.backgroundWidth = 256;
+        this.backgroundHeight = 256;
+        super.init();
         //setBackground(new BlurredBackground());
 
     }
@@ -30,12 +31,13 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         // The gui background image
+
         context.drawTexture(
                 RenderPipelines.GUI_TEXTURED,
                 Identifier.of(MOD_ID, "textures/gui/beacon_gui.png"),
-                this.x, this.y,
+                this.x + 12, this.y + 5,
                 0f, 0f,
-                this.width, this.height,
+                this.backgroundWidth, this.backgroundHeight,
                 256, 256,
                 -1
         );
@@ -43,7 +45,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context, mouseX, mouseY, delta); // world dim
+        //this.renderBackground(context, mouseX, mouseY, delta); // world dim
         super.render(context, mouseX, mouseY, delta);          // calls drawBackground → slots → components
         this.drawMouseoverTooltip(context, mouseX, mouseY);
     }
@@ -52,6 +54,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
     protected void init() {
         // 1. Clear previous elements (handled by super, but good practice to know)
         super.init();
+        this.clearChildren();
 
         // 2. Define Layout Variables
         int centerX = this.width / 2;
@@ -59,7 +62,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
 
         // Add close button
         ButtonWidget closeBtn = new ButtonWidget(0, 0, 100, 20, literal("Close"), (b) -> close());
-        closeBtn.uilib$updateParentPosition(centerX - 50, centerY + 90);
+        closeBtn.uilib$updateParentPosition(centerX - 50, centerY + 95);
         this.addWidget(closeBtn);
 
 

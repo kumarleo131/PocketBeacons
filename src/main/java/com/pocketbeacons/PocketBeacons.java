@@ -4,6 +4,7 @@ import com.pocketbeacons.menu.PocketBeaconMenu;
 import net.fabricmc.api.ModInitializer;
 
 
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -24,7 +25,7 @@ public class PocketBeacons implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final ScreenHandlerType<PocketBeaconMenu> POCKET_BEACON_MENU =
-			new ScreenHandlerType<PocketBeaconMenu>((syncId, inv) -> new PocketBeaconMenu(syncId, inv), FeatureSet.empty());
+			new ScreenHandlerType<>((syncId, inv) -> new PocketBeaconMenu(syncId, inv), FeatureFlags.VANILLA_FEATURES);
 
 	@Override
 	public void onInitialize() {

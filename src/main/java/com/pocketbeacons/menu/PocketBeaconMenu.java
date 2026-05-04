@@ -20,7 +20,7 @@ public class PocketBeaconMenu extends ScreenHandler {
         this.inventory = new SimpleInventory(1); // example: 1 slot for your beacon
 
         // Add your container slots
-        this.addSlot(new Slot(this.inventory, 0, 135, 109)); // position in GUI
+        this.addSlot(new Slot(this.inventory, 0, 135 + 13, 109 + 6)); // position in GUI
 
         // Add **player inventory slots**
         addPlayerInventory((PlayerInventory) playerInventory);
@@ -32,7 +32,7 @@ public class PocketBeaconMenu extends ScreenHandler {
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9,
-                        35 + col * 18, 136 + row * 18));
+                        35 + 13 + col * 18, 136+6 + row * 18));
             }
         }
     }
@@ -40,7 +40,7 @@ public class PocketBeaconMenu extends ScreenHandler {
     // Hotbar
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int col = 0; col < 9; ++col) {
-            this.addSlot(new Slot(playerInventory, col, 35 + col * 18, 194));
+            this.addSlot(new Slot(playerInventory, col, 35 + 13 + col * 18, 194+6));
         }
     }
 
