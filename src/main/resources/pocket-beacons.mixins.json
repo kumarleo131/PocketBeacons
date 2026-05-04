@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.pocketbeacons.mixin",
+	"compatibilityLevel": "JAVA_22",
+	"mixins": [
+		"PocketBeaconsMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

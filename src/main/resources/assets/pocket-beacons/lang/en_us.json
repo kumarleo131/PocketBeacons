@@ -1,0 +1,8 @@
+{
+  "item.pocket-beacons.pocket_beacon": "Pocket Beacon",
+  "screen.pocket-beacons.pocket_beacon": "Pocket Beacon",
+  "screen.pocket-beacons.pocket_beacon.primary": "Primary",
+  "screen.pocket-beacons.pocket_beacon.secondary": "Secondary",
+  "screen.pocket-beacons.pocket_beacon.fuel": "Fuel",
+  "screen.pocket-beacons.pocket_beacon.none": "None"
+}

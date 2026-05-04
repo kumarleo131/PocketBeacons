@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "pocket-beacons",
+	"version": "${version}",
+	"name": "Pocket Beacons",
+	"description": "Pocket Beacons!",
+	"authors": [
+		"MrCrabTAB"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": ""
+	},
+	"license": "MIT",
+	"icon": "assets/pocket-beacons/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.pocketbeacons.PocketBeacons"
+		],
+		"client": [
+			"com.pocketbeacons.PocketBeaconsClient"
+		]
+	},
+	"mixins": [
+		"pocket-beacons.mixins.json",
+		{
+			"config": "pocket-beacons.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.18.5",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
