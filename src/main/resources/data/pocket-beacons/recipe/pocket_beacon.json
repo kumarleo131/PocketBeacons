@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "INI",
+    "GCG",
+    "IBI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "G": "minecraft:glass",
+    "C": "minecraft:beacon",
+    "N": "minecraft:nether_star",
+    "B": "minecraft:bundle"
+  },
+  "result": {
+    "id": "pocket-beacons:pocket_beacon",
+    "count": 1
+  }
+}

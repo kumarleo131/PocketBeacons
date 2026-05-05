@@ -9,17 +9,22 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -62,6 +67,7 @@ public class PocketBeacons implements ModInitializer {
 				ApplyBeaconEffectPayload.CODEC
 		);
 
+
 		ServerPlayNetworking.registerGlobalReceiver(ApplyBeaconEffectPayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
 				ServerPlayerEntity player = context.player();
@@ -83,9 +89,19 @@ public class PocketBeacons implements ModInitializer {
 						duration = 0; // no item
 					}
 
+					// Remove any existing pocket beacon effects before applying new one
+					player.removeStatusEffect(StatusEffects.HASTE);
+					player.removeStatusEffect(StatusEffects.SPEED);
+					player.removeStatusEffect(StatusEffects.JUMP_BOOST);
+
 					player.addStatusEffect(new StatusEffectInstance(payload.effect(), duration, 0));
 					menu.getSlot(0).setStack(ItemStack.EMPTY);
-					player.playSound(SoundEvents.BLOCK_BEACON_ACTIVATE, 1.0f, 1.0f);
+					player.networkHandler.sendPacket(new PlaySoundS2CPacket(
+							Registries.SOUND_EVENT.getEntry(SoundEvents.BLOCK_BEACON_ACTIVATE),
+							SoundCategory.PLAYERS,
+							player.getX(), player.getY(), player.getZ(),
+							1.0f, 1.0f, 0L
+					));
 				}
 			});
 		});

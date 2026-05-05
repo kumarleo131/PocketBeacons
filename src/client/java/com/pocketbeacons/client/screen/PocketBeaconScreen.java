@@ -11,6 +11,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -31,6 +33,8 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
     private static final Identifier TEXTURE = Identifier.of("minecraft", "assets/pocket-beacons/textures/gui/container/inventory.png");
 
     private RegistryEntry<StatusEffect> selectedEffect = null;
+
+    private ButtonWidget confirmBtn;
 
     public PocketBeaconScreen(PocketBeaconMenu menu, PlayerInventory inventory, Text title) {
         super(menu, inventory, Text.of("")); // Temp get rid of wierd title on GUI
@@ -72,6 +76,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         //this.renderBackground(context, mouseX, mouseY, delta); // world dim
         super.render(context, mouseX, mouseY, delta);          // calls drawBackground → slots → components
         this.drawMouseoverTooltip(context, mouseX, mouseY);
+        updateConfirmButton(confirmBtn);
 
         // Draw icons ontop of buttons
         int centerX = this.width / 2;
@@ -80,6 +85,24 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
                 RenderPipelines.GUI_TEXTURED,
                 Identifier.of("minecraft", "textures/mob_effect/haste.png"),
                 centerX - 11, centerY - 98,
+                0f, 0f,
+                20, 20,
+                20, 20,
+                -1
+        );
+        context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.of("minecraft", "textures/mob_effect/speed.png"),
+                centerX - 40, centerY - 98,
+                0f, 0f,
+                20, 20,
+                20, 20,
+                -1
+        );
+        context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.of("minecraft", "textures/mob_effect/jump_boost.png"),
+                centerX + 18, centerY - 98,
                 0f, 0f,
                 20, 20,
                 20, 20,
@@ -100,13 +123,15 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
+
+
         // Close button
         ButtonWidget closeBtn = new ButtonWidget(0, 0, 100, 20, literal("Close"), (b) -> close());
         closeBtn.uilib$updateParentPosition(centerX - 50, centerY + 95);
         this.addWidget(closeBtn);
 
         // Confirm button
-        ButtonWidget confirmBtn = new ButtonWidget(70, -75, 50, 20, literal("Apply"), (b) -> {
+        confirmBtn = new ButtonWidget(70, -75, 50, 20, literal("Apply"), (b) -> {
             if (selectedEffect != null) {
                 ClientPlayNetworking.send(new ApplyBeaconEffectPayload(selectedEffect));
                 this.close();
@@ -117,21 +142,55 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         ButtonWidget hasteBtn = new ButtonWidget(centerX - 14,centerY-100,25,25, literal(""), (b) -> {
         if (selectedEffect == StatusEffects.HASTE) {
             selectedEffect = null;
-            confirmBtn.active = false;
+            updateConfirmButton(confirmBtn);
             b.setFocused(false); // toggle
         } else {
             selectedEffect = StatusEffects.HASTE;
-            confirmBtn.active = true;
+            updateConfirmButton(confirmBtn);
             b.setFocused(true); // toggle
             }
         });
         this.addWidget(hasteBtn);
 
+        // Speed button
+        ButtonWidget speedBtn = new ButtonWidget(centerX - 43,centerY-100,25,25, literal(""), (b) -> {
+            if (selectedEffect == StatusEffects.SPEED) {
+                selectedEffect = null;
+                updateConfirmButton(confirmBtn);
+                b.setFocused(false); // toggle
+            } else {
+                selectedEffect = StatusEffects.SPEED;
+                updateConfirmButton(confirmBtn);
+                b.setFocused(true); // toggle
+            }
+        });
+        this.addWidget(speedBtn);
+
+        // Jump Boost button
+        ButtonWidget jumpBtn = new ButtonWidget(centerX + 15,centerY-100,25,25, literal(""), (b) -> {
+            if (selectedEffect == StatusEffects.JUMP_BOOST) {
+                selectedEffect = null;
+                updateConfirmButton(confirmBtn);
+                b.setFocused(false); // toggle
+            } else {
+                selectedEffect = StatusEffects.JUMP_BOOST;
+                updateConfirmButton(confirmBtn);
+                b.setFocused(true); // toggle
+            }
+        });
+        this.addWidget(jumpBtn);
+
         confirmBtn.uilib$updateParentPosition(centerX - 25, centerY + 60);
         confirmBtn.active = false; // greyed out by default
         this.addWidget(confirmBtn);
+    }
 
-
-
+    private void updateConfirmButton(ButtonWidget btn) {
+        ItemStack slotItem = this.handler.getSlot(0).getStack();
+        boolean hasFuel = slotItem.isOf(Items.IRON_INGOT)
+                || slotItem.isOf(Items.GOLD_INGOT)
+                || slotItem.isOf(Items.DIAMOND)
+                || slotItem.isOf(Items.NETHERITE_INGOT);
+        btn.active = selectedEffect != null && hasFuel;
     }
 }
