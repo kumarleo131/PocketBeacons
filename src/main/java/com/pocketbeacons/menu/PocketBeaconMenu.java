@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -17,13 +18,26 @@ public class PocketBeaconMenu extends ScreenHandler {
     public PocketBeaconMenu(int syncId, Inventory playerInventory) {
         super(PocketBeacons.POCKET_BEACON_MENU, syncId);
 
-        // Container inventory (for your custom slots)
-        this.inventory = new SimpleInventory(1); // example: 1 slot for your beacon
+        // Container inventory
+        this.inventory = new SimpleInventory(1); // 1 slot for your beacon
 
-        // Add your container slots
-        this.addSlot(new Slot(this.inventory, 0, 135 + 13, 109 + 6)); // position in GUI
+        // Beacon slot
+        this.addSlot(new Slot(this.inventory, 0, 135 + 13, 109 + 6) {
+            @Override
+            public boolean canInsert(ItemStack stack) {
+                return stack.isOf(Items.IRON_INGOT)
+                        || stack.isOf(Items.GOLD_INGOT)
+                        || stack.isOf(Items.DIAMOND)
+                        || stack.isOf(Items.NETHERITE_INGOT);
+            }
 
-        // Add **player inventory slots**
+            @Override
+            public int getMaxItemCount() {
+                return 1;
+            }
+        });
+
+        // Add player inventory slots
         addPlayerInventory((PlayerInventory) playerInventory);
         addPlayerHotbar((PlayerInventory) playerInventory);
         }
@@ -52,12 +66,49 @@ public class PocketBeaconMenu extends ScreenHandler {
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int slot) {
-        return null;
+        ItemStack newStack = ItemStack.EMPTY;
+        Slot slotObj = this.slots.get(slot);
+
+        if (slotObj.hasStack()) {
+            ItemStack slotStack = slotObj.getStack();
+            newStack = slotStack.copy();
+
+            if (slot == 0) {
+                // Move from beacon slot to player inventory
+                if (!this.insertItem(slotStack, 1, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                // Move from player inventory to beacon slot
+                if (!this.insertItem(slotStack, 0, 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (slotStack.isEmpty()) {
+                slotObj.setStack(ItemStack.EMPTY);
+            } else {
+                slotObj.markDirty();
+            }
+        }
+
+        return newStack;
     }
 
     @Override
     public boolean canUse(PlayerEntity player) {
         return true;
+    }
+
+    // Close gui without applying
+    @Override
+    public void onClosed(PlayerEntity player) {
+        super.onClosed(player);
+        ItemStack stack = this.inventory.getStack(0);
+        if (!stack.isEmpty()) {
+            player.giveItemStack(stack);
+            this.inventory.setStack(0, ItemStack.EMPTY);
+        }
     }
 
 

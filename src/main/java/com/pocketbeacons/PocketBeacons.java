@@ -9,6 +9,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -16,6 +18,8 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -60,9 +64,29 @@ public class PocketBeacons implements ModInitializer {
 
 		ServerPlayNetworking.registerGlobalReceiver(ApplyBeaconEffectPayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
-				context.player().addStatusEffect(
-						new StatusEffectInstance(payload.effect(), 600, 0) // hard coded for 30 sec effect (600 ticks)
-				);
+				ServerPlayerEntity player = context.player();
+
+				if (player.currentScreenHandler instanceof PocketBeaconMenu menu) {
+					ItemStack slotItem = menu.getSlot(0).getStack();
+
+					int duration;
+
+					if (slotItem.isOf(Items.NETHERITE_INGOT)) {
+						duration = 20 * 300; // 5 minutes
+					} else if (slotItem.isOf(Items.DIAMOND)) {
+						duration = 20 * 240; // 4 minutes
+					} else if (slotItem.isOf(Items.GOLD_INGOT)) {
+						duration = 20 * 180; // 3 minutes
+					} else if (slotItem.isOf(Items.IRON_INGOT)) {
+						duration = 20 * 120; // 2 minutes
+					} else {
+						duration = 0; // no item
+					}
+
+					player.addStatusEffect(new StatusEffectInstance(payload.effect(), duration, 0));
+					menu.getSlot(0).setStack(ItemStack.EMPTY);
+					player.playSound(SoundEvents.BLOCK_BEACON_ACTIVATE, 1.0f, 1.0f);
+				}
 			});
 		});
 

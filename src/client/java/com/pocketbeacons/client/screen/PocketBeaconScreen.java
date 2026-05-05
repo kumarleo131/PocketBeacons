@@ -100,28 +100,35 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        // Add close button
+        // Close button
         ButtonWidget closeBtn = new ButtonWidget(0, 0, 100, 20, literal("Close"), (b) -> close());
         closeBtn.uilib$updateParentPosition(centerX - 50, centerY + 95);
         this.addWidget(closeBtn);
 
-        // Haste button
-        ButtonWidget hasteBtn = new ButtonWidget(centerX - 14,centerY-100,25,25, literal(""), (b) -> {
-        if (selectedEffect == StatusEffects.HASTE) {
-            selectedEffect = null; // deselect
-        } else {
-            selectedEffect = StatusEffects.HASTE;
-        }});
-        this.addWidget(hasteBtn);
-
-        //confirm
+        // Confirm button
         ButtonWidget confirmBtn = new ButtonWidget(70, -75, 50, 20, literal("Apply"), (b) -> {
             if (selectedEffect != null) {
                 ClientPlayNetworking.send(new ApplyBeaconEffectPayload(selectedEffect));
                 this.close();
             }
         });
+
+        // Haste button
+        ButtonWidget hasteBtn = new ButtonWidget(centerX - 14,centerY-100,25,25, literal(""), (b) -> {
+        if (selectedEffect == StatusEffects.HASTE) {
+            selectedEffect = null;
+            confirmBtn.active = false;
+            b.setFocused(false); // toggle
+        } else {
+            selectedEffect = StatusEffects.HASTE;
+            confirmBtn.active = true;
+            b.setFocused(true); // toggle
+            }
+        });
+        this.addWidget(hasteBtn);
+
         confirmBtn.uilib$updateParentPosition(centerX - 25, centerY + 60);
+        confirmBtn.active = false; // greyed out by default
         this.addWidget(confirmBtn);
 
 
