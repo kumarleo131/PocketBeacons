@@ -4,6 +4,15 @@ import com.pocketbeacons.menu.PocketBeaconMenu;
 import net.fabricmc.api.ModInitializer;
 
 
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandlerType;
@@ -27,6 +36,8 @@ public class PocketBeacons implements ModInitializer {
 	public static final ScreenHandlerType<PocketBeaconMenu> POCKET_BEACON_MENU =
 			new ScreenHandlerType<>((syncId, inv) -> new PocketBeaconMenu(syncId, inv), FeatureFlags.VANILLA_FEATURES);
 
+
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -41,6 +52,19 @@ public class PocketBeacons implements ModInitializer {
 				Identifier.of(MOD_ID, "pocket_beacon_menu"),
 				POCKET_BEACON_MENU
 		);
+
+		PayloadTypeRegistry.playC2S().register(
+				ApplyBeaconEffectPayload.ID,
+				ApplyBeaconEffectPayload.CODEC
+		);
+
+		ServerPlayNetworking.registerGlobalReceiver(ApplyBeaconEffectPayload.ID, (payload, context) -> {
+			context.server().execute(() -> {
+				context.player().addStatusEffect(
+						new StatusEffectInstance(payload.effect(), 200, 0)
+				);
+			});
+		});
 
 
 	}
