@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "",
-		"sources": ""
+		"sources": "https://github.com/kumarleo131/PocketBeacons"
 	},
 	"license": "MIT",
 	"icon": "assets/pocket-beacons/icon.png",
