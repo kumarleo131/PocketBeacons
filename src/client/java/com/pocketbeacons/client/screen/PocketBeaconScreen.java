@@ -21,6 +21,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
 
     public PocketBeaconScreen(PocketBeaconMenu menu, PlayerInventory inventory, Text title) {
         super(menu, inventory, Text.of("")); // Temp get rid of wierd title on GUI
+        title = Text.of("");
         this.backgroundWidth = 256;
         this.backgroundHeight = 256;
         super.init();
@@ -31,7 +32,6 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         // The gui background image
-
         context.drawTexture(
                 RenderPipelines.GUI_TEXTURED,
                 Identifier.of(MOD_ID, "textures/gui/beacon_gui.png"),
@@ -39,6 +39,16 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
                 0f, 0f,
                 this.backgroundWidth, this.backgroundHeight,
                 256, 256,
+                -1
+        );
+        // actual gui
+        context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.of(MOD_ID, "textures/gui/pocket_beacon_gui.png"),
+                this.x - 1, this.y - 20,
+                0f, 0f,
+                256, 128,
+                255, 128,
                 -1
         );
     }
@@ -52,9 +62,11 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
 
     @Override
     protected void init() {
-        // 1. Clear previous elements (handled by super, but good practice to know)
+        // 1. Clear previous elements
         super.init();
         this.clearChildren();
+        // get rid of inventory title
+        this.playerInventoryTitleY = Integer.MAX_VALUE;
 
         // 2. Define Layout Variables
         int centerX = this.width / 2;
