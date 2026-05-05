@@ -79,7 +79,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         context.drawTexture(
                 RenderPipelines.GUI_TEXTURED,
                 Identifier.of("minecraft", "textures/mob_effect/haste.png"),
-                centerX-18, centerY - 50,
+                centerX - 11, centerY - 98,
                 0f, 0f,
                 20, 20,
                 20, 20,
@@ -106,16 +106,16 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         this.addWidget(closeBtn);
 
         // Haste button
-        ButtonWidget hasteBtn = new ButtonWidget(0,0,25,25, literal(""), (b) -> {
+        ButtonWidget hasteBtn = new ButtonWidget(centerX - 14,centerY-100,25,25, literal(""), (b) -> {
         if (selectedEffect == StatusEffects.HASTE) {
             selectedEffect = null; // deselect
         } else {
             selectedEffect = StatusEffects.HASTE;
         }});
-        hasteBtn.uilib$updateParentPosition(centerX-20, centerY-50);
         this.addWidget(hasteBtn);
+
         //confirm
-        ButtonWidget confirmBtn = new ButtonWidget(0, 0, 50, 20, literal("Apply"), (b) -> {
+        ButtonWidget confirmBtn = new ButtonWidget(70, -75, 50, 20, literal("Apply"), (b) -> {
             if (selectedEffect != null) {
                 ClientPlayNetworking.send(new ApplyBeaconEffectPayload(selectedEffect));
                 this.close();

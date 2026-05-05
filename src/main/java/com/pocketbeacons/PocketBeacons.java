@@ -61,7 +61,7 @@ public class PocketBeacons implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(ApplyBeaconEffectPayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
 				context.player().addStatusEffect(
-						new StatusEffectInstance(payload.effect(), 200, 0)
+						new StatusEffectInstance(payload.effect(), 600, 0) // hard coded for 30 sec effect (600 ticks)
 				);
 			});
 		});
