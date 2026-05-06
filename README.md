@@ -69,7 +69,7 @@
 
 [Fabric API](https://modrinth.com/mod/fabric-api)
 
-[UILib](https://modrinth.com/mod/uilib)
+[UILib](https://modrinth.com/mod/ui-lib)
 
 ---
 
