@@ -22,17 +22,11 @@
 			"com.pocketbeacons.PocketBeaconsClient"
 		]
 	},
-	"mixins": [
-		"pocket-beacons.mixins.json",
-		{
-			"config": "pocket-beacons.client.mixins.json",
-			"environment": "client"
-		}
-	],
 	"depends": {
 		"fabricloader": ">=0.18.5",
 		"minecraft": "~1.21.11",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"uilib": ">=19.1.0"
 	}
 }

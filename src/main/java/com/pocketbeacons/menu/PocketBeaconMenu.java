@@ -1,6 +1,7 @@
 package com.pocketbeacons.menu;
 
 import com.pocketbeacons.PocketBeacons;
+import com.pocketbeacons.items.ModItems;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -62,7 +63,6 @@ public class PocketBeaconMenu extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, col, 35 + 13 + col * 18, 194+6));
         }
     }
-
     @Override
     public ItemStack quickMove(PlayerEntity player, int slot) {
         ItemStack newStack = ItemStack.EMPTY;
@@ -91,10 +91,13 @@ public class PocketBeaconMenu extends ScreenHandler {
         }
         return newStack;
     }
-
+    // If you drop PocketBeacon close menu
     @Override
     public boolean canUse(PlayerEntity player) {
-        return true;
+        ItemStack main = player.getMainHandStack();
+        ItemStack off = player.getOffHandStack();
+        return main.isOf(ModItems.POCKET_BEACON)
+                || off.isOf(ModItems.POCKET_BEACON);
     }
 
     // Close gui without applying
