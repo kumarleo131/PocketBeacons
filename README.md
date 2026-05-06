@@ -17,7 +17,7 @@
 <div align="center">
 
 ### GUI
-<img width="485" height="490" alt="gui_sshot" src="https://github.com/user-attachments/assets/5188707f-f84f-46cc-9e0c-52121993a0cd" />
+<img width="485" height="490" alt="gui_ss" src="https://github.com/user-attachments/assets/68b529bc-2d7c-404f-95b2-509f2ec28fa0" />
 
 
 ### Crafting Recipe
@@ -42,7 +42,8 @@
 | Iron Ingot | 2 minutes |
 | Gold Ingot | 3 minutes |
 | Diamond | 4 minutes |
-| Netherite Ingot | 5 minutes |
+| Emerald | 5 minutes |
+| Netherite Ingot | 10 minutes |
 
 
 ---
