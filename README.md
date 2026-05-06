@@ -61,7 +61,7 @@
 ## Installation
 
 1. Install [Fabric Loader](https://fabricmc.net/use/installer/)
-2. Drop [Fabric API](https://modrinth.com/mod/fabric-api), [UILib](https://modrinth.com/mod/uilib), and `pocket-beacons.jar` into your `mods` folder
+2. Drop [Fabric API](https://modrinth.com/mod/fabric-api), [UILib](https://modrinth.com/mod/ui-lib), and `pocket-beacons.jar` into your `mods` folder
 
 ---
 
@@ -69,7 +69,7 @@
 
 [Fabric API](https://modrinth.com/mod/fabric-api)
 
-[UILib](https://modrinth.com/mod/uilib)
+[UILib](https://modrinth.com/mod/ui-lib)
 
 ---
 
