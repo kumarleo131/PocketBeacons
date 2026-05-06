@@ -27,6 +27,10 @@
 </div>
 
 ---
+## Download
+
+- [Modrinth](https://modrinth.com/project/pocket-beacons)
+---
 
 ## Features
 
