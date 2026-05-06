@@ -5,7 +5,6 @@ import com.daqem.uilib.gui.widget.ButtonWidget;
 import com.pocketbeacons.ApplyBeaconEffectPayload;
 import com.pocketbeacons.menu.PocketBeaconMenu;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -14,25 +13,15 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-
-
-import java.awt.*;
 
 import static com.pocketbeacons.PocketBeacons.MOD_ID;
 import static net.minecraft.text.Text.literal;
 
 
 public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu> {
-    private PocketBeaconScreenState state;
-    private static final Identifier TEXTURE = Identifier.of("minecraft", "assets/pocket-beacons/textures/gui/container/inventory.png");
-
     private RegistryEntry<StatusEffect> selectedEffect = null;
 
     private ButtonWidget confirmBtn;
@@ -169,11 +158,8 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         // get rid of inventory title
         this.playerInventoryTitleY = Integer.MAX_VALUE;
 
-        // Define Layout Variables
         int centerX = this.width / 2;
         int centerY = this.height / 2;
-
-
 
         // Close button
         ButtonWidget closeBtn = new ButtonWidget(0, 0, 100, 20, literal("Close"), (b) -> close());
@@ -184,7 +170,6 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         confirmBtn = new ButtonWidget(70, -75, 50, 20, literal("Apply"), (b) -> {
             if (selectedEffect != null) {
                 ClientPlayNetworking.send(new ApplyBeaconEffectPayload(selectedEffect));
-                this.close();
             }
         });
 

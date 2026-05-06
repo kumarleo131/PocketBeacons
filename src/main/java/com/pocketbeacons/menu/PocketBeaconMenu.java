@@ -17,7 +17,8 @@ import static net.minecraft.item.Items.GOLD_INGOT;
 
 public class PocketBeaconMenu extends ScreenHandler {
 
-    private final Inventory inventory;
+    public final Inventory inventory;
+    public boolean effectApplied = false;
     public PocketBeaconMenu(int syncId, Inventory playerInventory) {
         super(PocketBeacons.POCKET_BEACON_MENU, syncId);
 
@@ -34,7 +35,6 @@ public class PocketBeaconMenu extends ScreenHandler {
                         || stack.isOf(Items.NETHERITE_INGOT)
                         || stack.isOf(Items.EMERALD);
             }
-
             @Override
             public int getMaxItemCount() {
                 return 1;
@@ -63,11 +63,6 @@ public class PocketBeaconMenu extends ScreenHandler {
         }
     }
 
-
-    public boolean stillValid(StyleSpriteSource.Player player) {
-        return true;
-    }
-
     @Override
     public ItemStack quickMove(PlayerEntity player, int slot) {
         ItemStack newStack = ItemStack.EMPTY;
@@ -88,14 +83,12 @@ public class PocketBeaconMenu extends ScreenHandler {
                     return ItemStack.EMPTY;
                 }
             }
-
             if (slotStack.isEmpty()) {
                 slotObj.setStack(ItemStack.EMPTY);
             } else {
                 slotObj.markDirty();
             }
         }
-
         return newStack;
     }
 
@@ -108,12 +101,12 @@ public class PocketBeaconMenu extends ScreenHandler {
     @Override
     public void onClosed(PlayerEntity player) {
         super.onClosed(player);
-        ItemStack stack = this.inventory.getStack(0);
-        if (!stack.isEmpty()) {
-            player.giveItemStack(stack);
-            this.inventory.setStack(0, ItemStack.EMPTY);
+        if (!effectApplied) {
+            ItemStack stack = this.inventory.getStack(0);
+            if (!stack.isEmpty()) {
+                player.giveItemStack(stack);
+                this.inventory.setStack(0, ItemStack.EMPTY);
+            }
         }
     }
-
-
 }

@@ -11,6 +11,5 @@ public class PocketBeaconsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		HandledScreens.register(PocketBeacons.POCKET_BEACON_MENU, PocketBeaconScreen::new);
-
 	}
 }

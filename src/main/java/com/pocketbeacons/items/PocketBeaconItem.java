@@ -13,15 +13,6 @@ import net.minecraft.world.World;
 
 
 public class PocketBeaconItem extends Item {
-    private static final String PRIMARY_EFFECT_KEY = "PrimaryEffect";
-    private static final String SECONDARY_EFFECT_KEY = "SecondaryEffect";
-    private static final String FUEL_COUNT_KEY = "FuelCount";
-    private static final String BURN_TICKS_KEY = "BurnTicks";
-
-    private static final int EFFECT_REFRESH_INTERVAL = 80;
-    private static final int EFFECT_DURATION_TICKS = 220;
-    private static final int FUEL_BURN_TICKS = 20 * 60;
-
     public PocketBeaconItem(Settings settings) {
         super(settings);
     }
@@ -31,7 +22,6 @@ public class PocketBeaconItem extends Item {
         if (hand != Hand.MAIN_HAND) {
             return ActionResult.PASS;
         }
-
         if (!world.isClient()) {
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override

@@ -39,13 +39,9 @@ public class PocketBeacons implements ModInitializer {
 	public static final String MOD_ID = "pocket-beacons";
 
 	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final ScreenHandlerType<PocketBeaconMenu> POCKET_BEACON_MENU =
 			new ScreenHandlerType<>((syncId, inv) -> new PocketBeaconMenu(syncId, inv), FeatureFlags.VANILLA_FEATURES);
-
-
 
 	@Override
 	public void onInitialize() {
@@ -67,14 +63,12 @@ public class PocketBeacons implements ModInitializer {
 				ApplyBeaconEffectPayload.CODEC
 		);
 
-
 		ServerPlayNetworking.registerGlobalReceiver(ApplyBeaconEffectPayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
 				ServerPlayerEntity player = context.player();
 
 				if (player.currentScreenHandler instanceof PocketBeaconMenu menu) {
 					ItemStack slotItem = menu.getSlot(0).getStack();
-
 					int duration;
 
 					if (slotItem.isOf(Items.NETHERITE_INGOT)) {
@@ -97,17 +91,19 @@ public class PocketBeacons implements ModInitializer {
 					player.removeStatusEffect(StatusEffects.JUMP_BOOST);
 
 					player.addStatusEffect(new StatusEffectInstance(payload.effect(), duration, 1));
+					menu.effectApplied = true;
 					menu.getSlot(0).setStack(ItemStack.EMPTY);
+					menu.inventory.markDirty();
+					player.currentScreenHandler.syncState();
+					player.closeHandledScreen();
 					player.networkHandler.sendPacket(new PlaySoundS2CPacket(
 							Registries.SOUND_EVENT.getEntry(SoundEvents.BLOCK_BEACON_ACTIVATE),
 							SoundCategory.PLAYERS,
 							player.getX(), player.getY(), player.getZ(),
-							1.0f, 1.0f, 0L
+							1.0f, 1.3f, 0L
 					));
 				}
 			});
 		});
-
-
 	}
 }

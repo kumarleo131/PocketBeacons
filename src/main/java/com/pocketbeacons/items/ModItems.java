@@ -27,7 +27,6 @@ public class ModItems {
         item = Registry.register(Registries.ITEM, itemKey, item);
         return item;
     }
-
     public static void initialize() {
         // creative tab
         Registry.register(Registries.ITEM_GROUP, POCKET_BEACONS_GROUP_KEY,
