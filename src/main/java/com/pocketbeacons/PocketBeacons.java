@@ -78,6 +78,8 @@ public class PocketBeacons implements ModInitializer {
 					int duration;
 
 					if (slotItem.isOf(Items.NETHERITE_INGOT)) {
+						duration = 20 * 600; // 10 minutes
+					} else if (slotItem.isOf(Items.EMERALD)) {
 						duration = 20 * 300; // 5 minutes
 					} else if (slotItem.isOf(Items.DIAMOND)) {
 						duration = 20 * 240; // 4 minutes

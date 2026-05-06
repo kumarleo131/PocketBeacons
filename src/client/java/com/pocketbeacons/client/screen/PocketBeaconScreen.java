@@ -108,6 +108,55 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
                 20, 20,
                 -1
         );
+
+        // Draw the fuel items (iron, diamond, etc.)
+        int offsetX = centerX - 8;
+        int offsetY = centerY - 14;
+        context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.of("minecraft", "textures/item/iron_ingot.png"),
+                offsetX, offsetY,
+                0f, 0f,
+                16, 16,
+                16, 16,
+                -1
+        );
+        context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.of("minecraft", "textures/item/gold_ingot.png"),
+                offsetX - 22, offsetY,
+                0f, 0f,
+                16, 16,
+                16, 16,
+                -1
+        );
+        context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.of("minecraft", "textures/item/diamond.png"),
+                offsetX - 45, offsetY,
+                0f, 0f,
+                16, 16,
+                16, 16,
+                -1
+        );
+        context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.of("minecraft", "textures/item/emerald.png"),
+                offsetX - 67, offsetY,
+                0f, 0f,
+                16, 16,
+                16, 16,
+                -1
+        );
+        context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.of("minecraft", "textures/item/netherite_ingot.png"),
+                offsetX - 88, offsetY,
+                0f, 0f,
+                16, 16,
+                16, 16,
+                -1
+        );
     }
 
     @Override
@@ -190,7 +239,8 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
         boolean hasFuel = slotItem.isOf(Items.IRON_INGOT)
                 || slotItem.isOf(Items.GOLD_INGOT)
                 || slotItem.isOf(Items.DIAMOND)
-                || slotItem.isOf(Items.NETHERITE_INGOT);
+                || slotItem.isOf(Items.NETHERITE_INGOT)
+                || slotItem.isOf(Items.EMERALD);
         btn.active = selectedEffect != null && hasFuel;
     }
 }

@@ -12,6 +12,9 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.StyleSpriteSource;
 import com.daqem.uilib.gui.*;
+
+import static net.minecraft.item.Items.GOLD_INGOT;
+
 public class PocketBeaconMenu extends ScreenHandler {
 
     private final Inventory inventory;
@@ -26,9 +29,10 @@ public class PocketBeaconMenu extends ScreenHandler {
             @Override
             public boolean canInsert(ItemStack stack) {
                 return stack.isOf(Items.IRON_INGOT)
-                        || stack.isOf(Items.GOLD_INGOT)
+                        || stack.isOf(GOLD_INGOT)
                         || stack.isOf(Items.DIAMOND)
-                        || stack.isOf(Items.NETHERITE_INGOT);
+                        || stack.isOf(Items.NETHERITE_INGOT)
+                        || stack.isOf(Items.EMERALD);
             }
 
             @Override
