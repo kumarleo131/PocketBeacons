@@ -96,7 +96,7 @@ public class PocketBeacons implements ModInitializer {
 					player.removeStatusEffect(StatusEffects.SPEED);
 					player.removeStatusEffect(StatusEffects.JUMP_BOOST);
 
-					player.addStatusEffect(new StatusEffectInstance(payload.effect(), duration, 0));
+					player.addStatusEffect(new StatusEffectInstance(payload.effect(), duration, 1));
 					menu.getSlot(0).setStack(ItemStack.EMPTY);
 					player.networkHandler.sendPacket(new PlaySoundS2CPacket(
 							Registries.SOUND_EVENT.getEntry(SoundEvents.BLOCK_BEACON_ACTIVATE),

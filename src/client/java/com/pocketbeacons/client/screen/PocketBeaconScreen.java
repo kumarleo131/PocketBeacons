@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerInventory;
@@ -199,6 +200,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
             b.setFocused(true); // toggle
             }
         });
+        hasteBtn.setTooltip(Tooltip.of(Text.literal("Haste II")));
         this.addWidget(hasteBtn);
 
         // Speed button
@@ -213,6 +215,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
                 b.setFocused(true); // toggle
             }
         });
+        speedBtn.setTooltip(Tooltip.of(Text.literal("Speed II")));
         this.addWidget(speedBtn);
 
         // Jump Boost button
@@ -227,6 +230,7 @@ public class PocketBeaconScreen extends AbstractContainerScreen<PocketBeaconMenu
                 b.setFocused(true); // toggle
             }
         });
+        jumpBtn.setTooltip(Tooltip.of(Text.literal("Jump Boost II")));
         this.addWidget(jumpBtn);
 
         confirmBtn.uilib$updateParentPosition(centerX - 25, centerY + 60);
