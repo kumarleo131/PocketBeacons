@@ -30,6 +30,7 @@
 ## Download
 
 - [Modrinth](https://modrinth.com/project/pocket-beacons)
+- [Curseforge](https://www.curseforge.com/minecraft/mc-mods/pocket-beacons-fabric)
 ---
 
 ## Features
